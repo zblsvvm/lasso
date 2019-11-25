@@ -7,6 +7,8 @@ import numpy as np
 
 
 class StandardScaler:
+    """使用方法：先fit，后transform"""
+    """How to use: first fit, then transform"""
     def __init__(self):
         self.mean_ = None
         self.scale_ = None
@@ -36,14 +38,33 @@ class StandardScaler:
 
 class PolynomialFeatures:
     def __init__(self, degree=2):
+        """
+        :param degree: 转化后的阶数，而数据的维度存在于X矩阵本身。
+        The transformed order, and the dimension of the data exists in the X matrix itself
+        """
         self._degree = degree
 
     def fit(self, X):
-        """fit()函数计算输出特征的个数。此处无用但保留接口"""
+        """fit()函数应该计算输出特征的个数。此处无用但保留类似于sklearn包中的接口"""
+        """The fit() function should calculate the number of output features. 
+        Not useful here but retains interfaces similar to those in the sklearn package"""
         pass
 
     def transform(self, X):
-        Xp = X
-        for i in range(2, self._degree + 1):
-            Xp = np.hstack([X ** i, Xp])
+        """将X矩阵转化为适应多项式特诊的新矩阵"""
+        """Transforming the X matrix into a new matrix that accommodates polynomial special diagnosis"""
+        # TODO cross-multiplication
+        # 注意：由于实现过程的原因，在此处没有添加第0列的全1向量，而是在fit的过程中添加
+        # Note: Due to the implementation process, the all 1 vector of column 0 is not added here,
+        # but is added during the fit process.
+        features = X.shape[1]
+        degree = self._degree
+        Xp = np.ones((len(X), 1))
+        for i in range(features):
+            for j in range(degree):
+                X_1 = X[:, i] ** (j + 1)
+                # print(X.shape, X_1.shape, len(X_1))
+                X_1 = X_1.reshape(len(X_1), 1)
+                Xp = np.hstack([Xp, X_1])
+        Xp = Xp[:, 1:]
         return Xp

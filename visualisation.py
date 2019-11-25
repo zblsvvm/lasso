@@ -1,5 +1,6 @@
 """
 数据可视化，包含一些绘图方法
+Data visualization, including some drawing methods
 """
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,3 +14,4 @@ def plot_in_order(X_train, y_train, y_predict):
     plt.scatter(xt, yt)
     plt.plot(xp, yp, color="r")
     plt.show()
+

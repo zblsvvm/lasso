@@ -1,0 +1,187 @@
+注：所有的算法思想均为从资料中学习而来，而非自创方法。代码是根据算法思想自己编写，不保证其正确性。
+Note: All algorithm ideas are learned from network materials, not self-created methods.
+The code is written by myself according to the algorithm idea and does not guarantee its correctness.
+
+
+线性回归：
+算法思想：略去
+线性回归的最佳参数theta可以通过数学解析解获得，获得方法实现于LinearRegression中的fit_normal函数。
+也可以使用其他方法获得theta的近似解（如梯度下降等）。
+Linear regression:
+Algorithm thought: omit
+The best parameter of the linear regression, theta, can be obtained by mathematical analytical solution.
+The obtained method is implemented in the fit_normal function in LinearRegression.
+Other methods can also be used to obtain an approximate solution to theta (such as gradient descent, etc.).
+
+
+多项式回归：
+多项式回归的核心思想是将一阶的数据X进行拓展，如[x1,x2]拓展为[x1,x1^2,x2,x2^2,x1*x2]，使原来较少的维度拓展为较高的维度
+然后对这个高维度的X数据使用线性回归的拟合方法，就可以得到一个适应高维度的theta向量，这就是多项式回归。
+多项式回归的核心是拓展X矩阵，其具体实现位于PolynomialFeatures类中。
+Polynomial regression:
+The core idea of polynomial regression is to extend the first-order data X,
+such as [x1,x2] is expanded to [x1,x1^2,x2,x2^2,x1*x2],
+so that the original less dimension is expanded to High dimension.
+Then using the linear regression fitting method for this high-dimensional X data,
+we can get a theta vector that adapts to high dimensions, which is polynomial regression.
+The core of polynomial regression is to extend the X matrix,
+the specific implementation of which is located in the PolynomialFeatures class.
+
+
+损失函数：
+lasso算法的损失函数为J(theta)=MSE(y,y_hat;theta)+alpha*sum(abs(theta))，alpha为超参数
+其中，均方误差MSE为1/m*sum((y-y_hat)**2)，此值为不包含penalty的损失函数。
+y为真实值（测试数据集y_test），y_hat为预测值，即通过模型方程计算得到的y值。
+Loss function:
+The loss function of the lasso algorithm is J(theta)=MSE(y,y_hat;theta)+alpha*sum(abs(theta)),
+and alpha is the hyperparameter.
+Among them, the mean square error MSE is 1/m*sum((y-y_hat)**2),
+and this value is a loss function that does not contain penalty.
+y is the true value (test data set y_test), and y_hat is the predicted value,
+that is, the y value calculated by the model equation.
+
+
+最小化损失函数：
+最小化损失函数的方法为梯度下降法。通过梯度下降法可以得到使得损失函数取最小值时的一组theta值。
+梯度下降法的实现主要需要通过损失函数求得其梯度。关于梯度下降的详细实现位于LinearRegression类中。
+Minimize the loss function:
+The method of minimizing the loss function is the gradient descent method.
+A set of theta values when the loss function takes the minimum value can be obtained by the gradient descent method.
+The implementation of the gradient descent method mainly needs to obtain its gradient through the loss function.
+A detailed implementation of the gradient descent is located in the LinearRegression class.
+
+
+关于数据选择：
+如果只使用训练数据集，很有可能发生了过拟合而不自知，所以引入测试数据集，通过测试数据集来判断模型的好坏。
+但如果只是用固定的测试数据集，也可能发生对特定测试数据集过拟合（因为训练模型的时候可能仅针对测试数据集调参）。
+所以我们再增加验证数据集。验证数据集用于在训练的过程中对模型进行测试，而测试数据集用于在训练结束后判断模型的好坏。
+也就是说测试数据集作为衡量模型最终性能的数据集，不参与模型的训练过程，而验证数据集作为调整超参数使用的数据集。
+分离训练与测试数据集的代码见于model_selection
+About data selection:
+If only the training data set is used, it is very likely that over-fitting does not occur,
+so the test data set is introduced, and the test data set is used to judge whether the model is good or bad.
+However, if you only use a fixed test data set,
+it may happen that the test data set is over-fitting
+(because the training model may only be used for the test data set).
+So we add the verification data set.
+The verification data set is used to test the model during the training process,
+and the test data set is used to judge the quality of the model after the training is over.
+That is to say, the test data set is used as a data set to measure the final performance of the model,
+and does not participate in the training process of the model,
+and the verification data set is used as a data set for adjusting the hyperparameters.
+The code separating the training and test data sets is found in model_selection
+
+
+测试及评价模型好坏：
+代码中使用了r2_score的评价方法，位于metrics文件中
+其主要思想为评价训练出的模型比基准模型（基准模型是使用y_mean来预测y）好的程度来评价。
+评分为1减去我们的模型的误差除以基准模型的误差。
+r2<=1，r2越大越好。当我们的模型不犯任何错误时，r2=1。当我们的模型等于基准模型时，r2=0。
+如果r2<0，说明我们的模型还不如基准模型，很有可能模型的选择出现了问题
+Test and evaluate the model is good or bad:
+The code uses r2_score evaluation method, located in the metrics file.
+The main idea is to evaluate the trained model compared to the benchmark model
+(the benchmark model uses y_mean to predict y).
+The score is 1 minus the error of our model divided by the error of the baseline model.
+R2<=1, the larger the r2, the better. When our model does not make any mistakes, r2=1.
+When our model is equal to the baseline model, r2=0.
+If r2<0, it means that our model is not as good as the benchmark model.
+It is very likely that there is a problem with the choice of the model.
+
+
+交叉验证：
+将训练数据集分为k份，将其中的每一份作为验证数据集，而剩下的部分作为训练数据集。
+在model_selection中实现了k重交叉验证
+Cross-validation:
+The training data set is divided into k shares, each of which is used as a verification data set,
+and the remaining part is used as a training data set.
+K-cross-validation is implemented in model_selection
+
+
+网格搜索：
+本算法中主要的超参数有惩罚项系数alpha和模型阶数degree两个。
+网格搜索的作用是在给定的alpha和degree的范围中，寻找可以使得模型获得最高score的一组超参数组合。
+每次验证选取alpha和degree的一种组合计算其score，获得score最高的一组，并保留搜索历史。
+Grid search:
+The main hyperparameters in this algorithm are the penalty coefficient alpha and the model order degree.
+The role of grid search is to find a set of hyperparameter combinations
+that give the model the highest score in the given range of alpha and degree.
+Each verification selects a combination of alpha and degree to calculate its score,
+obtains the highest score group, and retains the search history.
+
+
+数据标准化：
+算法思想及作用见ML课程，实现于preprocessing文件中的StandardScaler类
+在PolynomialFeature之后，进行fit操作之前调用
+Data standardization:
+The algorithm idea and function can be found in the ML course,
+implemented in the standardScaler class in the preprocessing file.
+After the PolynomialFeature, call before the fit operation
+
+
+关于代码封装：
+我的代码模仿了sklearn包中提供的代码的封装方式，也就是说采用了类似的调用方法，函数名，参数等。
+LassoRegression类是对算法几个主要过程的包装。
+首先创建类的对象，然后调用fit函数对训练数据集进行拟合，拟合的结果是获得最佳参数theta
+predict方法是根据已经训练的模型，传入测试数据，得到预测结果
+score方法是获得模型的r2_score
+About code encapsulation:
+My code mimics the encapsulation of the code provided in the sklearn package,
+which means that similar calling methods, function names, parameters, etc. are used.
+The LassoRegression class is a wrapper around several major processes of the algorithm.
+First create the object of the class, then call the <fit> function to fit the training data set,
+the result of the fitting is to get the best parameter theta
+The <predict> method is based on the model that has been trained,
+passing in the test data and obtaining the predicted result.
+The <score> method is to get the model's r2_score
+
+
+算法步骤整理：
+1、生成或加载一组数据
+2、将数据分割成训练及测试数据集
+3、模型训练过程（fit）
+3.1、扩展数据维度以适应多项式(PolynomialFeature)
+3.2、数据标准化(StandardScaler)
+3.3、使用线性回归方法进行拟合（也就是最小化损失函数）（此处使用梯度下降，关于梯度下降的思想省略）
+3.4、保存获得的最佳参数theta
+此时已获得模型，还可以进行的操作有：
+1、根据训练好的模型和测试数据集，获取预测结果（predict）
+2、获得模型的评价（score）
+3、对最佳超参数进行网格搜索（grid_search，grid_search的过程中使用交叉验证）
+4、绘制各种不同的可视化图形
+Algorithm step finishing:
+1, generate or load a set of data
+2. Split the data into training and test data sets
+3. Model training process (fit)
+3.1. Extend the data dimension to fit the polynomial (PolynomialFeature)
+3.2, data standardization (StandardScaler)
+3.3. Use the linear regression method to fit (that is, minimize the loss function)
+(the gradient is used here, the idea of gradient descent is omitted)
+3.4. Save the best parameters obtained from theta
+
+At this point, the model has been obtained, and the operations that can be performed are:
+1. Obtain prediction results based on trained models and test data sets.
+2, get the evaluation of the model (score)
+3. Grid search for the best hyperparameters (grid_search, cross-validation in the process of grid_search)
+4, draw a variety of different visualization graphics
+
+
+探索中的功能：
+1、随机梯度下降法（fit_sgd）
+是一种少量牺牲精度而大幅度提高运算效率的算法（相比于正在使用的批量梯度下降法）
+已经对随机梯度下降本身进行了实现，但尚未进行整合测试
+2、主成分分析（PCA）
+是一种少量牺牲精度而大幅减少数据维度，从而大幅提高运算效率的算法
+PCA用于对数据的预处理，所以可以和最小化过程并存
+已经对PCA算法本身进行了实现，但尚未进行整合测试
+Functions in exploration:
+1. stochastic gradient descent method (fit_sgd)
+Is an algorithm that sacrifices precision and greatly improves computational efficiency
+(compared to the batch gradient descent method being used)(fit_bgd)
+The stochastic gradient descent itself has been implemented, but integration testing has not yet been performed.
+
+2. Principal Component Analysis (PCA)
+Is an algorithm that sacrifices precision and greatly reduces the data dimension,
+thereby greatly improving the efficiency of the operation.
+PCA is used to preprocess the data, so it can coexist with the minimization process.
+The PCA algorithm itself has been implemented, but integration testing has not yet been performed.
