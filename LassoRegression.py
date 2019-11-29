@@ -18,7 +18,10 @@ class LassoRegression:
         self.interception_ = None  # 截距 interception
         self.lin_reg = None  # 调用一个线性回归器 Call a linear regression
         self.std_scaler = StandardScaler()  # 调用一个数据归一化类 Call a data normalization class
+	
+        self.graph = None
         self.alpha = None  # lasso回归的alpha超参数 The Alpha hyperparameter of lasso regression
+		 
 
     def _preprocess_data(self, X, first_fit=False):
         """对数据进行预处理，包括扩展数据维度以适应多项式，以及数据归一化"""
@@ -51,6 +54,7 @@ class LassoRegression:
         self.coef_ = self.lin_reg.coef_
         self.interception_ = self.lin_reg.interception_
         self.alpha = alpha
+        self.graph = self.lin_reg.graph
 
     def predict(self, X_test):
         """给定待预测数据集X_predict，返回表示X_predict的结果向量"""
