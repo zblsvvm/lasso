@@ -24,3 +24,11 @@ class Data:
         X = boston.data
         y = boston.target
         return X, y
+    
+    def rgb_testdata(self):
+        dataset=np.loadtxt('testdata_rgb.txt', skiprows=1)
+        dataset=np.loadtxt('testdata_rgb.txt', skiprows=1)
+        X=dataset[:, 0:8]
+        Y=dataset[:,8]
+        return X,Y 
+        

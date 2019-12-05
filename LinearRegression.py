@@ -8,6 +8,7 @@ class LinearRegression:
         self.coef_ = None  # 系数
         self.interception_ = None  # 截距
         self._theta = None  # 参数向量
+        self.graph = None
 
     def fit_normal(self, X_train, y_train):
         """使用解析解的方法训练Linear Regression模型"""
@@ -87,17 +88,17 @@ class LinearRegression:
                 if x[i] != 0:
                     res.append(np.sign(x[i]))
                 else:
-                    res.append(x)
+                    res.append(x[i])
             return np.array(res)
 
         def dJ_lasso(theta, X_b, y, alpha):
             """添加了penalty的梯度"""
             """gradient with penalty"""
-            penalty = alpha * np.sum(_sign(theta))
+            signs = _sign(theta)
             res = np.empty(len(theta))
-            res[0] = np.sum(X_b.dot(theta) - y) + penalty
+            res[0] = np.sum(X_b.dot(theta) - y) + alpha*signs[0]
             for i in range(1, len(theta)):
-                res[i] = (X_b.dot(theta) - y).dot(X_b[:, i]) + penalty
+                res[i] = (X_b.dot(theta) - y).dot(X_b[:, i]) + alpha*signs[i]
             return res * 2 / len(X_b)
 
         def gradient_descent(X_b, y, initial_theta, eta, n_iters=1e-4, epsilon=1e-8):
@@ -118,11 +119,14 @@ class LinearRegression:
             """
             theta = initial_theta
             cur_iter = 0
+            hist = []
+            hist.append(theta)
             if not lasso:
                 while cur_iter < n_iters:
                     gradient = dJ(theta, X_b, y)
                     last_theta = theta
                     theta = theta - eta * gradient
+                    hist.append(theta)
                     if abs(J(theta, X_b, y) - J(last_theta, X_b, y)) < epsilon:
                         break
                     cur_iter += 1
@@ -131,14 +135,16 @@ class LinearRegression:
                     gradient = dJ_lasso(theta, X_b, y, alpha)
                     last_theta = theta
                     theta = theta - eta * gradient
+                    hist.append(theta)
                     if abs(J_lasso(theta, X_b, y, alpha) - J_lasso(last_theta, X_b, y, alpha)) < epsilon:
                         break
                     cur_iter += 1
-            return theta
+            return theta, np.array(hist)
 
         X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
         initial_theta = np.zeros(X_b.shape[1])
-        self._theta = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)
+        self._theta = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)[0]
+        self.graph = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)[1]
         self.interception_ = self._theta[0]
         self.coef_ = self._theta[1:]
         return self
@@ -167,6 +173,8 @@ class LinearRegression:
 
             theta = initial_theta
             m = len(X_b)
+            hist = []
+            hist.append(theta)
             if not lasso:
                 for cur_iter in range(n_iters):
                     # 需要使得每一圈中所有的样本都被看一遍，但仍要保证其顺序是随机的，所以对数据进行了乱序操作
@@ -176,6 +184,7 @@ class LinearRegression:
                     for i in range(m):
                         gradient = dJ_sgd(theta, X_b_new[i], y_new[i])
                         theta = theta - learning_rate(cur_iter * m + i) * gradient
+                        hist.append(theta)
                 # 由于是随机梯度，所以不使用两次迭代损失函数差距小于一定的范围来结束循环，而是迭代固定的次数
             else:
                 for cur_iter in range(n_iters):
@@ -185,11 +194,13 @@ class LinearRegression:
                     for i in range(m):
                         gradient = dJ_sgd_lasso(theta, X_b_new[i], y_new[i], alpha)
                         theta = theta - learning_rate(cur_iter * m + i) * gradient
-            return theta
+                        hist.append(theta)
+            return theta, np.array(hist)
 
         X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
         initial_theta = np.random.randn(X_b.shape[1])
-        self._theta = sgd(X_b, y_train, initial_theta, n_iters, t0, t1)
+        self._theta = sgd(X_b, y_train, initial_theta, n_iters, t0, t1)[0]
+        self.graph = sgd(X_b, y_train, initial_theta, n_iters, t0, t1)[1]
         self.interception_ = self._theta[0]
         self.coef_ = self._theta[1:]
         return self
