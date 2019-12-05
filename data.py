@@ -15,6 +15,9 @@ class Data:
         x = np.random.uniform(-3, 3, size=size)
         X = x.reshape(-1, 1)
         y = 0.5 * x ** 2 + x + 2 + np.random.normal(0, 1, size=size)
+        
+        
+        
         return train_test_split(X, y)
 
     def multi_data_boston(self):
@@ -24,7 +27,7 @@ class Data:
         X = boston.data
         y = boston.target
         return X, y
-    
+ 
     def rgb_testdata(self):
         dataset=np.loadtxt('testdata_rgb.txt', skiprows=1)
         dataset=np.loadtxt('testdata_rgb.txt', skiprows=1)
@@ -32,3 +35,4 @@ class Data:
         Y=dataset[:,8]
         return X,Y 
         
+

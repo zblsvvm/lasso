@@ -3,6 +3,17 @@ from LassoRegression import LassoRegression
 from data import Data
 import numpy as np
 from model_selection import train_test_split, cross_val_score
+import time
+
+t=time.time()
+
+X, y = Data().dataset_rgb()
+#X,y=Data().random_dataset_known(20)
+
+
+
+nd=X.shape[0]
+nf=X.shape[1]
 
 X, y = Data().rgb_testdata() 
 X_train, X_test, y_train, y_test = train_test_split(X, y, seed=666)
@@ -11,6 +22,7 @@ alpha = np.logspace(-8, 4, 12, base = 2)
 final_coefs = {}
 graph = {}
 scores = []
+
 
 lasso = None
 while(lasso == None):

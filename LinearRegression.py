@@ -1,6 +1,6 @@
 import numpy as np
 from metrics import r2_score
-
+from LSS import LSsolution
 
 class LinearRegression:
     def __init__(self):
@@ -101,7 +101,7 @@ class LinearRegression:
                 res[i] = (X_b.dot(theta) - y).dot(X_b[:, i]) + alpha*signs[i]
             return res * 2 / len(X_b)
 
-        def gradient_descent(X_b, y, initial_theta, eta, n_iters=1e-4, epsilon=1e-8):
+        def gradient_descent(X_b, y, initial_theta, eta, n_iters=20, epsilon=1e-8):
             """
             梯度下降算法 Gradient descent algorithm
             :param initial_theta: 参数列表theta的初始值。如要避免局部最优解，可使用不同初值多次计算
@@ -142,7 +142,10 @@ class LinearRegression:
             return theta, np.array(hist)
 
         X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
+
         initial_theta = np.zeros(X_b.shape[1])
+
+
         self._theta = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)[0]
         self.graph = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)[1]
         self.interception_ = self._theta[0]
@@ -199,8 +202,10 @@ class LinearRegression:
 
         X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
         initial_theta = np.random.randn(X_b.shape[1])
+
         self._theta = sgd(X_b, y_train, initial_theta, n_iters, t0, t1)[0]
         self.graph = sgd(X_b, y_train, initial_theta, n_iters, t0, t1)[1]
         self.interception_ = self._theta[0]
         self.coef_ = self._theta[1:]
         return self
+
