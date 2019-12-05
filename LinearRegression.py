@@ -142,11 +142,9 @@ class LinearRegression:
             return theta, np.array(hist)
 
         X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
-#        initial_theta = np.zeros(X_b.shape[1]) ##SELECT BETWEEN RANDOM START POINT AND LS SOLUTION START POINT
-#
 
-        initial_theta = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(y_train)
-#        initial_theta=LSsolution(X_b, y_train)
+        initial_theta = np.zeros(X_b.shape[1])
+
 
         self._theta = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)[0]
         self.graph = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)[1]
@@ -203,11 +201,8 @@ class LinearRegression:
             return theta, np.array(hist)
 
         X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
-        initial_theta = np.zeros(X_b.shape[1]) ##SELECT BETWEEN RANDOM START POINT AND LS SOLUTION START POINT
-#        initial_theta = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(y_train)
+        initial_theta = np.random.randn(X_b.shape[1])
 
-        
-        
         self._theta = sgd(X_b, y_train, initial_theta, n_iters, t0, t1)[0]
         self.graph = sgd(X_b, y_train, initial_theta, n_iters, t0, t1)[1]
         self.interception_ = self._theta[0]

@@ -27,28 +27,12 @@ class Data:
         X = boston.data
         y = boston.target
         return X, y
-    
-    def dataset_rgb(self):
-        dataset = np.loadtxt(fname = "testdata_rgb.txt", skiprows=1, unpack=False)
+ 
+    def rgb_testdata(self):
+        dataset=np.loadtxt('testdata_rgb.txt', skiprows=1)
+        dataset=np.loadtxt('testdata_rgb.txt', skiprows=1)
         X=dataset[:, 0:8]
-        y=dataset[:,8]
-        return X,y
-    
-    def random_dataset_known(self, nd):
-        X=np.asarray(np.arange(nd))
-        X=X.reshape(-1,1)
+        Y=dataset[:,8]
+        return X,Y 
         
-        for i in range(4):
-            X=np.hstack((X, np.asarray(np.arange(nd).reshape(-1,1))))
-        
-        Y=[]
-        for i in range(nd):
-            y=3+2*X[i][0] +1.5*X[i][1]-3*X[i][2] + 4.5*X[i][3] +0.1*X[i][4] +0.2*X[i][0]**2 +0.5*X[i][1]**2-3*X[i][2]**2 - 4*X[i][3]**2 +X[i][4]**2
-            Y.append(y)
-        
-        return X,np.asarray(Y).reshape(-1,1)
-        
-            
-        
-        
-        
+
