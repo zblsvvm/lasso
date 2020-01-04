@@ -1,6 +1,5 @@
 import numpy as np
 from metrics import r2_score
-from LSS import LSsolution
 
 class LinearRegression:
     def __init__(self):
@@ -59,11 +58,31 @@ class LinearRegression:
             except:
                 return float('inf')
 
+        def uaf(x):
+            """edition author: FL.Zhang"""
+
+            """ Because the absolute value function is not differentiable, 
+            I use the uniform approximation function of the absolute value function
+            """
+            u = 0.05
+            a = u * np.log(np.exp(x / u) + np.exp(- x / u))
+            return a
+
+        def uaf_derivative(x):
+            """the derivative of the uniform approximation function"""
+            u = 0.05
+            a = (np.exp(x / u) - np.exp(- x / u)) / (np.exp(x / u) + np.exp(- x / u))
+            return a
+
+
         def J_lasso(theta, X_b, y, alpha):
             """添加了penalty的损失函数"""
             """Added loss function for penalty"""
+            theta = np.array(theta)
             try:
-                return np.sum((y - X_b.dot(theta)) ** 2) / len(X_b) + alpha * sum(theta ** 2)
+                return np.sum((y - X_b.dot(theta)) ** 2) / len(X_b) + alpha * sum(uaf(theta))
+                # return np.sum((y - X_b.dot(theta)) ** 2) / len(X_b) + alpha * sum(theta ** 2)
+                # return np.sum((y - X_b.dot(theta)) ** 2) / len(X_b) + alpha * sum(abs(theta))
             except:
                 return float('inf')
 
@@ -79,27 +98,11 @@ class LinearRegression:
             """
             return 2. / len(X_b) * X_b.T.dot(X_b.dot(theta) - y)
 
-        def _sign(x):
-            # TODO 忘记了这部分实现是否正确，有待考察，或采用更先进的方法
-            # TODO Forget whether this part of the implementation is correct, to be investigated,
-            #  or to adopt a more advanced approach
-            res = []
-            for i in range(len(x)):
-                if x[i] != 0:
-                    res.append(np.sign(x[i]))
-                else:
-                    res.append(x[i])
-            return np.array(res)
 
         def dJ_lasso(theta, X_b, y, alpha):
             """添加了penalty的梯度"""
             """gradient with penalty"""
-            signs = _sign(theta)
-            res = np.empty(len(theta))
-            res[0] = np.sum(X_b.dot(theta) - y) + alpha*signs[0]
-            for i in range(1, len(theta)):
-                res[i] = (X_b.dot(theta) - y).dot(X_b[:, i]) + alpha*signs[i]
-            return res * 2 / len(X_b)
+            return 2. / len(X_b) * X_b.T.dot(X_b.dot(theta) - y) + alpha * uaf_derivative(theta)
 
         def gradient_descent(X_b, y, initial_theta, eta, n_iters=20, epsilon=1e-8):
             """
