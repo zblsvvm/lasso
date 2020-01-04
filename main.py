@@ -8,6 +8,7 @@ import time
 
 t=time.time()
 
+# Depending on your actual file location
 X, y = readfile('C:/Users/82569/Desktop/Residuals_Match_DMhydro_Less_z.txt')
 
 
