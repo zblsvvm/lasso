@@ -3,19 +3,19 @@ from LassoRegression import LassoRegression
 from data import Data
 import numpy as np
 from model_selection import train_test_split, cross_val_score
+from read_lasso_file import readfile
 import time
 
 t=time.time()
 
-X, y = Data().dataset_rgb()
-#X,y=Data().random_dataset_known(20)
+X, y = readfile('C:/Users/82569/Desktop/Residuals_Match_DMhydro_Less_z.txt')
+
 
 
 
 nd=X.shape[0]
 nf=X.shape[1]
 
-X, y = Data().rgb_testdata() 
 X_train, X_test, y_train, y_test = train_test_split(X, y, seed=666)
 lasR = LassoRegression(2)
 alpha = np.logspace(-8, 4, 12, base = 2) 
