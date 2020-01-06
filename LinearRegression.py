@@ -64,13 +64,13 @@ class LinearRegression:
             """ Because the absolute value function is not differentiable, 
             I use the uniform approximation function of the absolute value function
             """
-            u = 0.05
+            u = 0.1
             a = u * np.log(np.exp(x / u) + np.exp(- x / u))
             return a
 
         def uaf_derivative(x):
             """the derivative of the uniform approximation function"""
-            u = 0.05
+            u = 0.1
             a = (np.exp(x / u) - np.exp(- x / u)) / (np.exp(x / u) + np.exp(- x / u))
             return a
 
@@ -81,8 +81,6 @@ class LinearRegression:
             theta = np.array(theta)
             try:
                 return np.sum((y - X_b.dot(theta)) ** 2) / len(X_b) + alpha * sum(uaf(theta))
-                # return np.sum((y - X_b.dot(theta)) ** 2) / len(X_b) + alpha * sum(theta ** 2)
-                # return np.sum((y - X_b.dot(theta)) ** 2) / len(X_b) + alpha * sum(abs(theta))
             except:
                 return float('inf')
 
