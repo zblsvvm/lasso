@@ -1,7 +1,7 @@
 """
 对lasso回归的过程进行封装
 """
-from preprocessing import PolynomialFeatures
+from preprocessing import polynomialFeatures
 from preprocessing import StandardScaler
 from LinearRegression import LinearRegression
 from metrics import r2_score
@@ -27,8 +27,7 @@ class LassoRegression:
         """对数据进行预处理，包括扩展数据维度以适应多项式，以及数据归一化"""
         """Preprocessing data, including extending data dimensions to accommodate polynomials, 
         and data normalization"""
-        poly_fea = PolynomialFeatures(self._degree)
-        X_poly = poly_fea.transform(X)
+        X_poly = polynomialFeatures(X, self._degree)
         if first_fit:
             self.std_scaler.fit(X_poly)
         X_std = self.std_scaler.transform(X_poly)
