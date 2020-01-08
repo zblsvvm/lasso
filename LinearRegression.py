@@ -1,6 +1,7 @@
 import numpy as np
 from metrics import r2_score
 
+
 class LinearRegression:
     def __init__(self):
         """初始化Linear Regression模型"""
@@ -74,7 +75,6 @@ class LinearRegression:
             a = (np.exp(x / u) - np.exp(- x / u)) / (np.exp(x / u) + np.exp(- x / u))
             return a
 
-
         def J_lasso(theta, X_b, y, alpha):
             """添加了penalty的损失函数"""
             """Added loss function for penalty"""
@@ -95,7 +95,6 @@ class LinearRegression:
             :return: 梯度 gradient
             """
             return 2. / len(X_b) * X_b.T.dot(X_b.dot(theta) - y)
-
 
         def dJ_lasso(theta, X_b, y, alpha):
             """添加了penalty的梯度"""
@@ -120,8 +119,7 @@ class LinearRegression:
             """
             theta = initial_theta
             cur_iter = 0
-            hist = []
-            hist.append(theta)
+            hist = [theta]
             if not lasso:
                 while cur_iter < n_iters:
                     gradient = dJ(theta, X_b, y)
@@ -146,7 +144,6 @@ class LinearRegression:
 
         initial_theta = np.zeros(X_b.shape[1])
 
-
         self._theta = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)[0]
         self.graph = gradient_descent(X_b, y_train, initial_theta, eta, n_iters)[1]
         self.interception_ = self._theta[0]
@@ -164,6 +161,7 @@ class LinearRegression:
             "the size of X_train must be equal to the size of y_train"
         assert n_iters >= 1
 
+
         def dJ_sgd(theta, X_b_i, y_i):
             """对数据集中任意选取的一个数据计算随机梯度，使用向量化的方法"""
             return X_b_i * (X_b_i.dot(theta) - y_i) * 2.
@@ -177,8 +175,7 @@ class LinearRegression:
 
             theta = initial_theta
             m = len(X_b)
-            hist = []
-            hist.append(theta)
+            hist = [theta]
             if not lasso:
                 for cur_iter in range(n_iters):
                     # 需要使得每一圈中所有的样本都被看一遍，但仍要保证其顺序是随机的，所以对数据进行了乱序操作
@@ -209,4 +206,3 @@ class LinearRegression:
         self.interception_ = self._theta[0]
         self.coef_ = self._theta[1:]
         return self
-
