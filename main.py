@@ -14,8 +14,8 @@ nd = X.shape[0]
 nf = X.shape[1]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, seed=666)
-lasR = LassoRegression(3)
-alpha = np.logspace(-8, 4, 12, base=2)
+lasR = LassoRegression(4)
+alpha = np.logspace(-8, 1, 12, base=2)
 final_coefs = {}
 graph = {}
 scores = []
