@@ -5,10 +5,10 @@ import numpy as np
 # C:/Users/82569/Desktop/2222.txt
 def readfile(location):
     # number of features
-    nof = tuple(np.arange(10))
+    nof = tuple(np.arange(8))
 
     # ExpFit
-    exp = (10,)
+    exp = (8,)
 
     # Extracted matrix
     m = np.loadtxt(location, skiprows=1, usecols=nof)
@@ -19,3 +19,5 @@ def readfile(location):
 
 loc = 'C:/Users/82569/Desktop/Residuals_Match_DMhydro_Less_z.txt'
 m, c = readfile(loc)
+print(m)
+print(c)
