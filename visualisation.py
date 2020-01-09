@@ -20,7 +20,7 @@ def plot_in_order(X_train, y_train, y_predict):
 def plt_coefs_lambs(X_train, y_train, method):
     """绘制参数与lambda的关系"""
     coefs = []
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
     lasso_reg = None
     for l in lambs:
         lasso_reg = LassoRegression(degree=1, method=method, lamb=l)
@@ -39,7 +39,7 @@ def plt_coefs_lambs(X_train, y_train, method):
 
 def plt_scores_lambs(X_train, y_train, X_test, y_test, method):
     scores = []
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
@@ -63,7 +63,7 @@ def plt_pred_obser(X_train, y_train, X_test, y_test, method, lamb=0):
 
 
 def plt_residu_lambs(X_train, y_train, X_test, y_test, method):
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
@@ -94,7 +94,7 @@ def plt_scores_datasize(X_train, y_train, X_test, y_test, method):
 
 def plt_square_lambs(X_train, y_train, X_test, y_test, method):
     x_2_list = np.array([])
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
@@ -111,7 +111,7 @@ def plt_square_lambs(X_train, y_train, X_test, y_test, method):
 def plt_coefs_coefs(X_train, y_train, method):
     coefs = []
     num = [1, 4, 5, 7, 8, 9]
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
     pca = PCA(n_components=3)
     pca.fit(X_train, y_train)
     X_train = pca.transform(X_train)
