@@ -4,68 +4,36 @@ from data import Data
 import numpy as np
 from model_selection import train_test_split, cross_val_score
 from read_lasso_file import readfile
-import time
+from visualisation import plt_coefs_lambs
+from visualisation import plt_scores_lambs
+from visualisation import plt_pred_obser
+from visualisation import plt_residu_lambs
+from visualisation import plt_scores_datasize
+from visualisation import plt_square_lambs
+from visualisation import plt_coefs_coefs
 
-
-
-t=time.time()
 # Depending on your actual file location
 
 X, y = readfile('C:/Users/82569/Desktop/Residuals_Match_DMhydro_Less_z.txt')
 
-nd = X.shape[0]
-nf = X.shape[1]
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, seed=666)
-lasR = LassoRegression(method="bgd", degree=2, lamb=0)
-alpha = np.logspace(-8, 1, 12, base=2)
-final_coefs = {}
 
-scores = []
+method = "bgd"
 
-lasso = None
-while (lasso == None):
+"""If you want to use the drawing function, just remove the #"""
+"""If you want to use the drawing function, just remove the #"""
+"""If you want to use the drawing function, just remove the #"""
 
-    l = input('should we do lasso? (True/False)')
-    if l == 'True':
-        lasso = True
-    elif l == 'False':
-        lasso = False
-    else:
-        print('incorrect value')
-method = str(input('what method? (bgd, sgd, normal)'))
-file_name = str(input('name of the file'))
+#plt_coefs_lambs(X_train, y_train, method)
 
-for a in alpha:
-    lasR.fit(X_train, y_train)
-    scores.append(lasR.score(X_test, y_test))
-    final_coefs[a] = lasR.theta
+#plt_scores_lambs(X_train, y_train, X_test, y_test, method)
 
-fig, axes = plt.subplots(2, 3, sharex=False, sharey=False, figsize=(15, 10))
-for j in range(len(final_coefs.keys())):
-    axes[0][0].plot(alpha, [final_coefs[i][j] for i in alpha])
-axes[0][0].set_xlabel('Lambda')
-axes[0][0].set_ylabel('Coefficients')
+#plt_pred_obser(X_train, y_train, X_test, y_test, method, lamb=0)
 
-axes[0][1].plot(alpha, scores)
-axes[0][1].set_xlabel('Lambda')
-axes[0][1].set_ylabel('Scores')
+#plt_residu_lambs(X_train, y_train, X_test, y_test, method)
 
-lasR.fit(X_train, y_train)
-y_pred = lasR.predict(X_test)
-axes[0][2].scatter(y_pred, y_test)
-axes[0][2].set_xlabel('Predicted y')
-axes[0][2].set_ylabel('Observed y')
+#plt_scores_datasize(X_train, y_train, X_test, y_test, method)
 
-for i in range(X_train.shape[1]):
-    axes[1][0].scatter(X_test[:, i], y_test - y_pred)
-axes[1][0].set_xlabel('Coefficients\' values')
-axes[1][0].set_ylabel('Residue')
+#plt_square_lambs(X_train, y_train, X_test, y_test, method)
 
-for i in range(X_train.shape[1]):
-    for j in range(X_train.shape[1]):
-        axes[1][1].plot([final_coefs[a][i] for a in alpha], [final_coefs[a][j] for a in alpha])
-axes[1][1].set_xlabel('C[i]')
-axes[1][1].set_ylabel('C[j]')
-
-fig.savefig(file_name)
+#plt_coefs_coefs(X_train, y_train, method)
