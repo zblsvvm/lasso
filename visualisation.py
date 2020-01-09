@@ -127,7 +127,9 @@ def plt_coefs_coefs(X_train, y_train, method):
         for j in coefs_num[i:]:
             plt.subplot(3, 3, num[k])
             k += 1
-            plt.plot(coefs[:, i], coefs[:, j], '.-', label='${c_%d}$ versus ${c_%d}$' % (i, j))
+            x = coefs[:, i]
+            y = coefs[:, j]
+            plt.quiver(x[:-1], y[:-1], x[1:] - x[:-1], y[1:] - y[:-1], scale_units='xy', angles='xy', scale=1, label='${c_%d}$ versus ${c_%d}$' % (i, j))
             plt.legend()
             j += 1
 
