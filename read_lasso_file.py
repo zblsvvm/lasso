@@ -17,7 +17,4 @@ def readfile(location):
     v = np.loadtxt(location, skiprows=1, usecols=exp)
     return m, v
 
-loc = 'C:/Users/82569/Desktop/Residuals_Match_DMhydro_Less_z.txt'
-m, c = readfile(loc)
-print(m)
-print(c)
+
