@@ -17,36 +17,42 @@ from model_selection import _k_split
 
 X, y = readfile('C:/Users/82569/Desktop/Residuals_Match_DMhydro_Less_z.txt')
 
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, seed=666)
 
+method = None
+while method == None:
+    l = input('What method do you want to use ?\n a  Batch Gradient Descent\n b  Stochastic Gradient descent\n c  '
+              'Mini-batch '
+              'Gradient Descent\n d  Normal Equation Solution\n e  Coordinate Descent\n')
+    if l == "a":
+        method = "bgd"
+    elif l == "b":
+        method = "sgd"
+    elif l == "c":
+        method = "mgd"
+    elif l == "d":
+        method = "normal"
+    elif l == "e":
+        method = "cd"
+    else:
+        print('incorrect value')
 
-
-method = "bgd"
+# method = "bgd"
 
 """If you want to use the drawing function, just remove the #"""
 """If you want to use the drawing function, just remove the #"""
 """If you want to use the drawing function, just remove the #"""
 
-#plt_coefs_lambs(X_train, y_train, method)
+# plt_coefs_lambs(X_train, y_train, method)
 
-#plt_scores_lambs(X_train, y_train, X_test, y_test, method)
+# plt_scores_lambs(X_train, y_train, X_test, y_test, method)
 
-#plt_pred_obser(X_train, y_train, X_test, y_test, method, lamb=0.2)
+# plt_pred_obser(X_train, y_train, X_test, y_test, method, lamb=0.2)
 
-#plt_residu_lambs(X_train, y_train, X_test, y_test, method)
+# plt_residu_lambs(X_train, y_train, X_test, y_test, method)
 
-#plt_scores_datasize(X_train, y_train, X_test, y_test, method)
+# plt_scores_datasize(X_train, y_train, X_test, y_test, method)
 
-#plt_square_lambs(X, y, 5, method)
+# plt_square_lambs(X, y, 5, method)
 
-#plt_coefs_coefs(X_train, y_train, method)
-
-
-
-
-
-
-
-
-
+# plt_coefs_coefs(X_train, y_train, method)
