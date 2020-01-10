@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from LassoRegression import LassoRegression
 from sklearn.decomposition import PCA
+from model_selection import _k_split
 
 
 def plot_in_order(X_train, y_train, y_predict):
@@ -23,7 +24,7 @@ def plt_coefs_lambs(X_train, y_train, method):
     lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
     lasso_reg = None
     for l in lambs:
-        lasso_reg = LassoRegression(degree=1, method=method, lamb=l)
+        lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
         coefs.append(lasso_reg.theta)
     coefs = np.array(coefs)
@@ -39,7 +40,7 @@ def plt_coefs_lambs(X_train, y_train, method):
 
 def plt_scores_lambs(X_train, y_train, X_test, y_test, method):
     scores = []
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
@@ -63,7 +64,7 @@ def plt_pred_obser(X_train, y_train, X_test, y_test, method, lamb=0):
 
 
 def plt_residu_lambs(X_train, y_train, X_test, y_test, method):
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
@@ -92,16 +93,24 @@ def plt_scores_datasize(X_train, y_train, X_test, y_test, method):
     plt.show()
 
 
-def plt_square_lambs(X_train, y_train, X_test, y_test, method):
-    x_2_list = np.array([])
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
-    for l in lambs:
-        lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
-        lasso_reg.fit(X_train, y_train)
-        y_pred = lasso_reg.predict(X_test)
-        x_2 = np.sum((y_test - y_pred) ** 2)
-        x_2_list = np.append(x_2_list, x_2)
-    plt.plot(lambs, x_2_list)
+def plt_square_lambs(X, y, k, method):
+    k = k + 1
+    Xs_train, ys_train, Xs_val, ys_val = _k_split(X, y, k)
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
+    min_lamb_list = np.array([])
+    for i in range(1, k):
+        x_2_list = np.array([])
+        for l in lambs:
+            lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
+            lasso_reg.fit(Xs_train[i], ys_train[i])
+            y_pred = lasso_reg.predict(Xs_val[i])
+            x_2 = np.sum((ys_val[i] - y_pred) ** 2)
+            x_2_list = np.append(x_2_list, x_2)
+        min_pos = np.argmin(x_2_list)
+        plt.plot(lambs, x_2_list)
+        min_lamb_list = np.append(min_lamb_list, lambs[min_pos])
+    best_lamb = np.mean(min_lamb_list)
+    print('Best result for alpha is', best_lamb)
     plt.xlabel("lambdas")
     plt.ylabel("log(X_2)")
     plt.xscale("log")
@@ -111,7 +120,7 @@ def plt_square_lambs(X_train, y_train, X_test, y_test, method):
 def plt_coefs_coefs(X_train, y_train, method):
     coefs = []
     num = [1, 4, 5, 7, 8, 9]
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
     pca = PCA(n_components=3)
     pca.fit(X_train, y_train)
     X_train = pca.transform(X_train)
