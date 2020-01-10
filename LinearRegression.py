@@ -17,7 +17,7 @@ class LinearRegression:
         self.theta = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(y_train)
         return self
 
-    def fit_bgd(self, X_train, y_train, initial_theta=None, lamb=0, eta=0.01, n_iters=10000, epsilon=1e-8):
+    def fit_bgd(self, X_train, y_train, initial_theta=None, lamb=0, eta=0.01, n_iters=20000, epsilon=1e-8):
         """根据训练数据集X_train, y_train, 使用梯度下降法训练Linear Regression模型"""
         assert X_train.shape[0] == y_train.shape[0], \
             "the size of X_train must be equal to the size of y_train"
@@ -28,17 +28,16 @@ class LinearRegression:
             except:
                 return float('inf')
 
-        def _sign(theta):
-            res = []
-            for i in range(len(theta)):
-                if theta[i] != 0:
-                    res.append(np.sign(theta[i]))
-                else:
-                    res.append(1e-8)
-            return np.array(res)
+
+        def uaf_derivative(x):
+            """the derivative of the uniform approximation function"""
+            u = 0.01
+            a = (np.exp(x / u) - np.exp(- x / u)) / (np.exp(x / u) + np.exp(- x / u))
+            return a
+
 
         def dJ(theta, X_b, y, lamb):
-            penalty = lamb * _sign(theta)
+            penalty = lamb * uaf_derivative(theta)
             vec = X_b.T.dot(X_b.dot(theta) - y) * 2. / len(y)
             return vec + penalty
 
@@ -67,11 +66,14 @@ class LinearRegression:
     def fit_cd(self, X, y, lamb=0.2, threshold=0.1):
         """ coordinate descent Method to get Lasso Regression Coefficient"""
         # Calculate RSS(residual sum of square)
-        rss = lambda X, y, w: np.sum((y - X.dot(w)) ** 2)
-
         # initialize w.
         m, n = X.shape
+        x0 = np.ones((m, 1))
+        X = np.hstack((x0, X))
+        m, n = X.shape
         w = np.zeros((n, 1))
+        rss = lambda X, y, w: np.sum((y - X.dot(w))**2)
+        # initialize w.
         r = rss(X, y, w)
         # CD method
         niter = itertools.count(1)
@@ -88,7 +90,7 @@ class LinearRegression:
                     w_k = (p_k - lamb / 2) / z_k
                 else:
                     w_k = 0
-                w[k] = w_k
+                w[k, 0] = w_k
             r_prime = rss(X, y, w)
             delta = abs(r_prime - r)
             r = r_prime
