@@ -106,17 +106,16 @@ class LinearRegression:
             "the size of X_train must be equal to the size of y_train"
         assert n_iters >= 1
 
-        def _sign(theta):
-            res = []
-            for i in range(len(theta)):
-                if theta[i] != 0:
-                    res.append(np.sign(theta[i]))
-                else:
-                    res.append(1e-8)
-            return np.array(res)
+        def uaf_derivative(x):
+            """the derivative of the uniform approximation function"""
+            u = 0.01
+            a = (np.exp(x / u) - np.exp(- x / u)) / (np.exp(x / u) + np.exp(- x / u))
+            return a
+
 
         def dJ_sgd(theta, X_b_i, y_i, lamb):
-            return X_b_i * (X_b_i.dot(theta) - y_i) * 2. + lamb * _sign(theta)
+
+            return X_b_i * (X_b_i.dot(theta) - y_i) * 2. + lamb * uaf_derivative(theta)
 
         def sgd(X_b, y, initial_theta, lamb=lamb, n_iters=n_iters, t0=t0, t1=t1):
 
