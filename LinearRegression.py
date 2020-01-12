@@ -121,7 +121,7 @@ class LinearRegression:
 
         def uaf_derivative(x):
             """the derivative of the uniform approximation function"""
-            u = 0.1
+            u = 0.07
             a = (np.exp(x / u) - np.exp(- x / u)) / (np.exp(x / u) + np.exp(- x / u))
             return a
 
