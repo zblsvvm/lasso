@@ -34,7 +34,7 @@ e Coefficients vs Coefficients --> Produces graph showing relationship between c
 
 
 Troubleshooting: 
-If overflow or invalid value error is experienced for batch or gradient descent, change the u variable in line 46 of LinearRegression.py for batch gradient descent and line 126 for stochastic gradient descent. 
+If overflow or invalid value error is experienced for batch or gradient descent, increase the u variable in line 46 of LinearRegression.py for batch gradient descent and line 126 for stochastic gradient descent. 
 
 For faster simulations, consider a narrower range of lambdas or larger lambda values. 
 
