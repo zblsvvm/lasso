@@ -51,7 +51,7 @@ choice= None
 while choice == None:
     c = input('What would you like to do?\n a Optimise \n b  Residuals vs Lambda \n c Dataset Size vs Scores \n d Coefficients vs Coefficients '
               'Mini-batch '
-              'Gradient Descent\n d  Normal Equation Solution\n e  Coordinate Descent\n')
+              'Gradient Descent\n e  Normal Equation Solution\n f  Coordinate Descent\n')
 
     if c == 'a':
         t = time.time()
