@@ -68,7 +68,7 @@ def plt_pred_obser(X_train, y_train, X_test, y_test, method, lamb=0):
 
 
 def plt_residu_lambs(X_train, y_train, X_test, y_test, method):
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
