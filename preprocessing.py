@@ -2,7 +2,7 @@ import numpy as np
 
 """
 1、数据归一化
-2、多项式特征
+# @Author   : Tian Xiao
 """
 
 
