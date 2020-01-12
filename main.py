@@ -15,9 +15,13 @@ from model_selection import _k_split
 
 # Depending on your actual file location
 
-X, y = readfile('C:/Users/82569/Desktop/Residuals_Match_DMhydro_Less_z.txt')
+X, y = readfile('testdata_rgb.txt')
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, seed=666)
+X_train, X_test, y_train, y_test = train_test_split(X, y, seed=466)
+
+lasso_reg = LassoRegression(degree=2, method="bgd", lamb=0.2)
+lasso_reg.fit(X_train, y_train)
+coefficients = lasso_reg.theta
 
 method = None
 while method == None:
@@ -38,14 +42,17 @@ while method == None:
         print('incorrect value')
 
 # method = "bgd"
-
+#lasso_reg = LassoRegression(degree=2, method="bgd", lamb=0.2)
+#lasso_reg.fit(X_train, y_train)
+#coefficients = lasso_reg.theta
+#print(coefficients)
 """If you want to use the drawing function, just remove the #"""
 """If you want to use the drawing function, just remove the #"""
 """If you want to use the drawing function, just remove the #"""
 
 # plt_coefs_lambs(X_train, y_train, method)
 
-# plt_scores_lambs(X_train, y_train, X_test, y_test, method)
+plt_scores_lambs(X_train, y_train, X_test, y_test, method)
 
 # plt_pred_obser(X_train, y_train, X_test, y_test, method, lamb=0.2)
 
