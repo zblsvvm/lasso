@@ -8,6 +8,28 @@ from model_selection import train_test_split
 获取数据集 Get the dataset
 # @Author   : Tian Xiao
 """
+
+def readfile(location):
+
+    # number of features
+    nof=8
+
+
+    n = tuple(np.arange(nof))
+
+    # output column
+    y = 8
+
+    # Extracted matrix
+    m = np.loadtxt(location, skiprows=1, usecols=n)
+
+    # Extracted expFit vector
+    v = np.loadtxt(location, skiprows=1, usecols=y)
+    return m, v
+
+
+
+
 class Data:
     def poly_1(self, seed=666):
         """随机生成的1维2阶含有高斯噪音的数据"""
@@ -25,8 +47,15 @@ class Data:
         y = boston.target
         X = X[y < 50.0]
         y = y[y < 50.0]
-        return train_test_split(X, y, test_ratio=0.2, seed=666)
+
+
+        return X, y
 
     def Residuals_Match_DMhydro_Less_z(self):
-        X, y = readfile('D:\Residuals_Match_DMhydro_Less_z.txt')
-        return train_test_split(X, y, test_ratio=0.2, seed=666)
+
+        #SPECIFY FILEPATH HERE:
+        # location='D:\Residuals_Match_DMhydro_Less_z.txt'
+        location = 'testdata_rgb.txt'
+
+        X, y = readfile(location)
+        return X, y
