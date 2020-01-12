@@ -23,7 +23,8 @@ def plt_coefs_lambs(X_train, y_train, method):
     """绘制参数与lambda的关系"""
     # @Author   : Tian Xiao
     coefs = []
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    #lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    lambs = np.logspace(-5, 1, 20)
     lasso_reg = None
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
@@ -43,7 +44,8 @@ def plt_coefs_lambs(X_train, y_train, method):
 def plt_scores_lambs(X_train, y_train, X_test, y_test, method):
     # @Author   : Tian Xiao
     scores = []
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10]
+    #lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10]
+    lambs = np.logspace(-5, 1, 20)
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
@@ -68,7 +70,8 @@ def plt_pred_obser(X_train, y_train, X_test, y_test, method, lamb=0):
 
 
 def plt_residu_lambs(X_train, y_train, X_test, y_test, method):
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    #lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    lambs = np.logspace(-5, 1, 20)
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
@@ -100,7 +103,8 @@ def plt_scores_datasize(X_train, y_train, X_test, y_test, method):
 
 def plt_square_lambs(X, y, k, method):
     Xs_train, ys_train, Xs_val, ys_val = _k_split(X, y, k)
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
+    #lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
+    lambs = np.logspace(-5, 1, 20)
     min_lamb_list = np.array([])
     for i in range(k):
         x_2_list = np.array([])
@@ -123,7 +127,8 @@ def plt_square_lambs(X, y, k, method):
 def plt_coefs_coefs(X_train, y_train, method):
     coefs = []
     num = [1, 4, 5, 7, 8, 9]
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
+    #lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
+    lambs = np.logspace(-5, 1, 20)
     pca = PCA(n_components=3)
     pca.fit(X_train, y_train)
     X_train = pca.transform(X_train)
@@ -151,7 +156,8 @@ def plt_coefs_coefs(X_train, y_train, method):
 def create_plots(X, y, X_train, y_train, X_test, y_test, method):
     k = 6
     Xs_train, ys_train, Xs_val, ys_val = _k_split(X, y, k)
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10]
+    #lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10]
+    lambs = np.logspace(-5, 1, 20)
     min_lamb_list = np.array([])
 
     fig, axs = plt.subplots(1, 2)
