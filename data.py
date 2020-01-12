@@ -1,10 +1,13 @@
-"""
-提供一些虚拟数据
-"""
+
 import numpy as np
 from sklearn import datasets
+from read_lasso_file import readfile
+from model_selection import train_test_split
 
-
+"""
+获取数据集 Get the dataset
+# @Author   : Tian Xiao
+"""
 class Data:
     def poly_1(self, seed=666):
         """随机生成的1维2阶含有高斯噪音的数据"""
@@ -22,4 +25,8 @@ class Data:
         y = boston.target
         X = X[y < 50.0]
         y = y[y < 50.0]
-        return X, y
+        return train_test_split(X, y, test_ratio=0.2, seed=666)
+
+    def Residuals_Match_DMhydro_Less_z(self):
+        X, y = readfile('D:\Residuals_Match_DMhydro_Less_z.txt')
+        return train_test_split(X, y, test_ratio=0.2, seed=666)

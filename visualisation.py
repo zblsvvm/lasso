@@ -9,6 +9,7 @@ from model_selection import _k_split
 
 
 def plot_in_order(X_train, y_train, y_predict):
+    # @Author   : Tian Xiao
     xt = X_train.T[0]
     yt = y_train
     xp = np.sort(xt)
@@ -20,6 +21,7 @@ def plot_in_order(X_train, y_train, y_predict):
 
 def plt_coefs_lambs(X_train, y_train, method):
     """绘制参数与lambda的关系"""
+    # @Author   : Tian Xiao
     coefs = []
     lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
     lasso_reg = None
@@ -36,9 +38,10 @@ def plt_coefs_lambs(X_train, y_train, method):
     for i in range(fea_len):
         plt.plot(lambs, coefs[:, i], '.-')
     plt.show()
-
+    print('Polynomial coefficients: \n', lasso_reg.theta, '\nScore: ', lasso_reg.score(X_test, y_test) )
 
 def plt_scores_lambs(X_train, y_train, X_test, y_test, method):
+    # @Author   : Tian Xiao
     scores = []
     lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10]
     for l in lambs:
@@ -80,6 +83,7 @@ def plt_residu_lambs(X_train, y_train, X_test, y_test, method):
 
 
 def plt_scores_datasize(X_train, y_train, X_test, y_test, method):
+    # @Author   : Tian Xiao
     scores = []
     splits = np.linspace(0.05, 1, 20) * len(X_train)
     splits = [int(i) for i in splits]
@@ -141,6 +145,66 @@ def plt_coefs_coefs(X_train, y_train, method):
             plt.quiver(x[:-1], y[:-1], x[1:] - x[:-1], y[1:] - y[:-1], scale_units='xy', angles='xy', scale=1, label='${c_%d}$ versus ${c_%d}$' % (i, j))
             plt.legend()
             j += 1
+
+    plt.show()
+
+
+def create_plots(X, y, X_train, y_train, X_test, y_test, method):
+    k = 6
+    Xs_train, ys_train, Xs_val, ys_val = _k_split(X, y, k)
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    min_lamb_list = np.array([])
+
+    fig, axs = plt.subplots(1, 2)
+
+    for i in range(1, k):
+        x_2_list = np.array([])
+        for l in lambs:
+            lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
+            lasso_reg.fit(Xs_train[i], ys_train[i])
+            y_pred = lasso_reg.predict(Xs_val[i])
+            x_2 = np.sum((ys_val[i] - y_pred) ** 2)
+            x_2_list = np.append(x_2_list, x_2)
+        min_pos = np.argmin(x_2_list)
+        axs[0].plot(lambs, x_2_list)
+        min_lamb_list = np.append(min_lamb_list, lambs[min_pos])
+    best_lamb = np.mean(min_lamb_list)
+
+
+
+
+    axs[0].set_xlabel("lambdas")
+    axs[0].set_ylabel("log(X_2)")
+    axs[0].set_xscale("log")
+
+    lasso_reg = LassoRegression(degree=2, method=method, lamb=0)
+    lasso_reg.fit(X_train, y_train)
+    y_pred = lasso_reg.predict(X_test)
+
+    axs[1].set_xlabel("Predicted y")
+    axs[1].set_ylabel("Observed y")
+    axs[1].scatter(y_pred, y_test)
+
+    lmax=max([np.max(y_pred), np.max(y_test)])
+    lmin=min([np.min(y_pred), np.min(y_test)])
+    axs[1].set_xlim([lmin, lmax])
+    axs[1].set_ylim([lmin, lmax])
+
+
+    print('Best result for alpha is', best_lamb, '\nScore= ', lasso_reg.score(X_test, y_test))
+    print('Coefficients =', lasso_reg.theta)
+
+
+
+
+
+
+
+
+
+
+
+
 
     plt.show()
 

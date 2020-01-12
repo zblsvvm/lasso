@@ -1,6 +1,5 @@
 """
-TODO PCA算法，仍在测试中
-TODO PCA algorithm, still in test
+@Author   : Tian Xiao
 """
 import numpy as np
 

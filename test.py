@@ -1,5 +1,6 @@
 """
 存放了一些测试中产生的代码 Stored some code generated in the test
+# @Author   : Tian Xiao
 """
 from LassoRegression import LassoRegression
 from data import Data

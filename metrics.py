@@ -1,5 +1,6 @@
 """
 衡量机器学习算法的指标 Metrics for measuring machine learning algorithms
+# @Author   : Tian Xiao
 """
 import numpy as np
 

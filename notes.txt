@@ -1,6 +1,11 @@
-注：所有的算法思想均为从资料中学习而来，而非自创方法。代码是根据算法思想自己编写，不保证其正确性。
-Note: All algorithm ideas are learned from network materials, not self-created methods.
-The code is written by myself according to the algorithm idea and does not guarantee its correctness.
+# @Author   : Tian Xiao
+
+过拟合：
+当我们的模型过于简单时，可能出现欠拟合问题。例如我们的数据大体遵循二次幂分布，而我们选用一次幂多项式模型。此时我们的模型不能完整表述数据关系。
+而当我们的模型过于复杂时，就可能出现过拟合问题。例如我们的数据大体遵循二次幂分布，而我们选用10次幂多项式模型。此时我们的模型过多的表达了数据中存在的噪音，在图像上来看是显得过于弯曲或震荡。过拟合问题具有较大的迷惑性是因为其在训练数据集上拥有更小的残差和，但是却在预测真实数据时具有较差的泛化能力。
+Overfitting:
+When our model is too simple, underfitting problems can occur. For example, our data generally follows the second power distribution, and we choose the first power polynomial model. At this time, our model cannot fully express the data relationship.
+When our model is too complicated, overfitting problems may occur. For example, our data generally follows a quadratic power distribution, and we use a 10th power polynomial model. At this time, our model over-expresses the noise in the data, which appears to be too curved or oscillating on the image. The overfitting problem is more confusing because it has a smaller residual sum on the training data set, but has a poorer generalization ability when predicting the real data.
 
 
 线性回归：
