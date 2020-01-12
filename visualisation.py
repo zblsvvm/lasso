@@ -38,7 +38,7 @@ def plt_coefs_lambs(X_train, y_train, method):
     for i in range(fea_len):
         plt.plot(lambs, coefs[:, i], '.-')
     plt.show()
-    print('Polynomial coefficients: \n', lasso_reg.theta, '\nScore: ', lasso_reg.score(X_test, y_test) )
+    print('Polynomial coefficients: \n', lasso_reg.theta, '\nScore: ', lasso_reg.score(X_train, y_train))
 
 def plt_scores_lambs(X_train, y_train, X_test, y_test, method):
     # @Author   : Tian Xiao
@@ -99,11 +99,10 @@ def plt_scores_datasize(X_train, y_train, X_test, y_test, method):
 
 
 def plt_square_lambs(X, y, k, method):
-    k = k + 1
     Xs_train, ys_train, Xs_val, ys_val = _k_split(X, y, k)
     lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
     min_lamb_list = np.array([])
-    for i in range(1, k):
+    for i in range(k):
         x_2_list = np.array([])
         for l in lambs:
             lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
@@ -152,7 +151,7 @@ def plt_coefs_coefs(X_train, y_train, method):
 def create_plots(X, y, X_train, y_train, X_test, y_test, method):
     k = 6
     Xs_train, ys_train, Xs_val, ys_val = _k_split(X, y, k)
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10]
     min_lamb_list = np.array([])
 
     fig, axs = plt.subplots(1, 2)
@@ -177,7 +176,7 @@ def create_plots(X, y, X_train, y_train, X_test, y_test, method):
     axs[0].set_ylabel("log(X_2)")
     axs[0].set_xscale("log")
 
-    lasso_reg = LassoRegression(degree=2, method=method, lamb=0)
+    lasso_reg = LassoRegression(degree=2, method=method, lamb=best_lamb)
     lasso_reg.fit(X_train, y_train)
     y_pred = lasso_reg.predict(X_test)
 
