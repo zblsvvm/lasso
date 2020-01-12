@@ -21,7 +21,7 @@ def plot_in_order(X_train, y_train, y_predict):
 def plt_coefs_lambs(X_train, y_train, method):
     """绘制参数与lambda的关系"""
     coefs = []
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
     lasso_reg = None
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
@@ -40,7 +40,7 @@ def plt_coefs_lambs(X_train, y_train, method):
 
 def plt_scores_lambs(X_train, y_train, X_test, y_test, method):
     scores = []
-    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
+    lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10]
     for l in lambs:
         lasso_reg = LassoRegression(degree=2, method=method, lamb=l)
         lasso_reg.fit(X_train, y_train)
@@ -49,6 +49,7 @@ def plt_scores_lambs(X_train, y_train, X_test, y_test, method):
     plt.xlabel("lambdas")
     plt.ylabel("scores")
     plt.xscale("log")
+    plt.ylim([-1,1])
     plt.plot(lambs, scores, '.-')
     plt.show()
 
@@ -112,8 +113,7 @@ def plt_square_lambs(X, y, k, method):
     best_lamb = np.mean(min_lamb_list)
     print('Best result for alpha is', best_lamb)
     plt.xlabel("lambdas")
-    plt.ylabel("log(X_2)")
-    plt.xscale("log")
+    plt.ylabel("Square of residuals")
     plt.show()
 
 
