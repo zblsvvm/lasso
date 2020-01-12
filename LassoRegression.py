@@ -6,6 +6,7 @@ from sklearn.decomposition import PCA
 
 """
 对lasso回归的过程进行封装
+# @Author   : Tian Xiao
 """
 
 
@@ -14,16 +15,20 @@ class LassoRegression:
         assert method == "bgd" or method == "sgd" or method == "normal" or method == "cd" or method == "mgd"
         assert lamb >= 0
         assert degree >= 1
-        self.lamb = lamb  # lasso回归的lambda超参数
-        self.degree = degree  # 多项式回归的阶数
-        self.method = method
-        self._lin_reg = LinearRegression()  # 调用一个线性回归器
-        self._poly_fea = None
-        self._std_scaler = None
-        self.theta = None  # 系数向量
+        self.lamb = lamb  # lambda超参数，lambda hyperparameters
+        self.degree = degree  # 多项式回归的阶数,Order of polynomial regression
+        self.method = method  # 最小化方法，Minimization method
+        self._lin_reg = LinearRegression()  # 调用一个线性回归器,Calling a Linear Regressor
+        self._poly_fea = None  # PolynomialFeatures
+        self._std_scaler = None  # StandardScaler
+        self.theta = None  # 系数向量,Coefficient vector
         self.pca = None
 
     def _train_data_preprocess(self, X_train, y_train):
+        """
+        在拟合前对数据进行预处理，包括PolynomialFeatures，StandardScaler等
+        Preprocess the data before fitting, including PolynomialFeatures, StandardScaler, etc.
+        """
         self._poly_fea = PolynomialFeatures(degree=self.degree)
         self._poly_fea.fit(X_train, y_train)
         X_p_train = self._poly_fea.transform(X_train)[:, 1:]
@@ -53,20 +58,30 @@ class LassoRegression:
         return self
 
     def _test_data_preprocess(self, X_test):
+        """
+        在测试前对数据进行预处理，处理规则与训练数据集一致
+        Preprocess the data before testing, and the processing rules are consistent with the training data set
+        """
         X_p_test = self._poly_fea.transform(X_test)[:, 1:]
         # X_p_test = self.pca.transform(X_p_test)
         X_p_s_test = self._std_scaler.transform(X_p_test)
         return X_p_s_test
 
     def predict(self, X_test):
-        """给定待预测数据集X_predict，返回表示X_predict的结果向量"""
+        """
+        给定待预测数据集X_predict，返回表示X_predict的结果向量
+        Given the data set X_predict to be predicted, return the result vector representing X_predict
+        """
         assert self.theta is not None, \
             "must fit before predict!"
         X_p_s_test = self._test_data_preprocess(X_test)
         return self._lin_reg.predict(X_p_s_test)
 
     def score(self, X_test, y_test):
-        """根据测试数据集x_test和y_test确定当前模型的准确度"""
+        """
+        根据测试数据集x_test和y_test确定当前模型的准确度
+        Determine the accuracy of the current model based on the test data sets x_test and y_test
+        """
         y_predict = self.predict(X_test)
         return r2_score(y_test, y_predict)
 
