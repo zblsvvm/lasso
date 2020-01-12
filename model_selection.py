@@ -1,6 +1,7 @@
 """
 模型选择：数据集分割，交叉验证，网格搜索
 Model selection: data set segmentation, cross validation, grid search
+# @Author   : Tian Xiao
 """
 import numpy as np
 
