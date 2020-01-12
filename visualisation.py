@@ -9,6 +9,7 @@ from model_selection import _k_split
 
 
 def plot_in_order(X_train, y_train, y_predict):
+    # @Author   : Tian Xiao
     xt = X_train.T[0]
     yt = y_train
     xp = np.sort(xt)
@@ -20,6 +21,7 @@ def plot_in_order(X_train, y_train, y_predict):
 
 def plt_coefs_lambs(X_train, y_train, method):
     """绘制参数与lambda的关系"""
+    # @Author   : Tian Xiao
     coefs = []
     lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
     lasso_reg = None
@@ -39,6 +41,7 @@ def plt_coefs_lambs(X_train, y_train, method):
 
 
 def plt_scores_lambs(X_train, y_train, X_test, y_test, method):
+    # @Author   : Tian Xiao
     scores = []
     lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1]
     for l in lambs:
@@ -79,6 +82,7 @@ def plt_residu_lambs(X_train, y_train, X_test, y_test, method):
 
 
 def plt_scores_datasize(X_train, y_train, X_test, y_test, method):
+    # @Author   : Tian Xiao
     scores = []
     splits = np.linspace(0.05, 1, 20) * len(X_train)
     splits = [int(i) for i in splits]
