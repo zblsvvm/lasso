@@ -1,3 +1,5 @@
+# @Author   : Tian Xiao
+
 第七周
 1、扩展了PolynomialFeatures类，使其可以应对高维度高阶数的数据（并从sklearn.datasets中加载了真实数据）
 2、修改了损失函数和其梯度，使其成为真正的lasso回归（而非ridge回归）
