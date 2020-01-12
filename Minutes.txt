@@ -1,0 +1,30 @@
+Project log: 
+
+Week 1: Meeting with Richard and group on Thursday morning. Outlined problem for us and explained to us the LASSO algorithm. 
+Out of meeting, we all researched LASSO using online resources, mainly stat quest youtube videos. I implemented LASSO algorithm myself on a trivial 1D dataset and implemented the minimisation using sklearn.optimisation.minimise as a starting point. 
+
+Week 2: 
+Meeting with Richard and group on Thursday morning. Gave us some more background and motivation for the project. Described cross validation to obtain lambda values to us in depth. 
+Richard gave us the website of, Rob Tribshiani, the leading academic in the area with some useful resources. For next week, I hope we can all implement k-fold cross validation on the trivial dataset  and then expand it for larger datasets before the next meeting. 
+
+Week 3: 
+Meeting with Richard and group on Thursday morning. A few of us had implemented a basic prototype of the LASSO software in Python, using k-fold cross validation and minimising using sklearn.optimise.minimise. We managed to get this to work with the Boston housing price dataset from the sklearn website. Over the next week, we will work to implement our own minimisation algorithm. 
+
+Week 4: 
+Meeting with Richard and group on Thursday morning. Tian developed a more sophisticated piece of software using classes and objects in Python which included a batch and stochastic gradient descent method written from scratch. This will be the software that we work on for the rest of the project. 
+
+Week 5:  Due to external deadlines, we didn’t have a meeting with Richard this week. 
+
+Week  6:
+Meeting with Richard and group on Thursday morning. We implemented a coordinate descent minimisation method after deciding that gradient descent was not suited to LASSO due to its non-differentiability.  
+
+Week 7:
+Meeting with Richard and group on Thursday morning. Using linear algebra, we obtained an expression for the weights corresponding to the ordinary least squares solution. We will use this as the starting point for the minimisation to avoid local minima on the loss surface. Richard gave us access to a practise test dataset which we will work on over the coming week. 
+
+
+Week 8:
+Meeting with Richard and group on Thursday morning.  We achieved a score of 0.47 which seemed low but Richard informed us that this was to be expected from this dataset.  The software has been improved to be easier to use and more streamlined. 
+
+Week 9:  Last meeting with Richard on Thursday morning. He gave us a final checklist for the software. We developed a first draft of the poster and discussed ideas of what to add to it over the Christmas break. 
+
+Week 10:  Due to external deadlines, we didn’t have a meeting with Richard this week.
