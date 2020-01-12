@@ -6,11 +6,19 @@ import itertools
 class LinearRegression:
 
     def __init__(self):
-        """初始化Linear Regression模型"""
+        # @Author   : Tian Xiao
+        """
+        初始化Linear Regression模型
+        Initialize the Linear Regression model
+        """
         self.theta = None
 
     def fit_normal(self, X_train, y_train):
-        """根据训练数据集X_train, y_train训练Linear Regression模型"""
+        # @Author   : Tian Xiao
+        """
+        根据训练数据集X_train, y_train训练Linear Regression模型
+        Train Linear Regression model based on training data set X_train, y_train
+        """
         assert X_train.shape[0] == y_train.shape[0], \
             "the size of X_train must be equal to the size of y_train"
         X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
@@ -18,7 +26,11 @@ class LinearRegression:
         return self
 
     def fit_bgd(self, X_train, y_train, initial_theta=None, lamb=0, eta=0.01, n_iters=20000, epsilon=1e-8):
-        """根据训练数据集X_train, y_train, 使用梯度下降法训练Linear Regression模型"""
+        # @Author   : Tian Xiao
+        """
+        根据训练数据集X_train, y_train, 使用梯度下降法训练Linear Regression模型
+        Train the Linear Regression model using the gradient descent method based on the training data set X_train, y_train
+        """
         assert X_train.shape[0] == y_train.shape[0], \
             "the size of X_train must be equal to the size of y_train"
 
@@ -101,7 +113,8 @@ class LinearRegression:
         return self
 
     def fit_sgd(self, X_train, y_train, lamb=0, n_iters=10, t0=5, t1=5000):
-        """根据训练数据集X_train, y_train, 使用梯度下降法训练Linear Regression模型"""
+        # @Author   : Tian Xiao
+        """根据训练数据集X_train, y_train, 使用随机梯度下降法训练Linear Regression模型"""
         assert X_train.shape[0] == y_train.shape[0], \
             "the size of X_train must be equal to the size of y_train"
         assert n_iters >= 1
@@ -141,6 +154,7 @@ class LinearRegression:
         return self
 
     def predict(self, X_train):
+        # @Author   : Tian Xiao
         """给定待预测数据集X_predict，返回表示X_predict的结果向量"""
         assert self.theta is not None, \
             "must fit before predict!"
@@ -150,6 +164,7 @@ class LinearRegression:
         return X_b.dot(self.theta)
 
     def score(self, X_test, y_test):
+        # @Author   : Tian Xiao
         """根据测试数据集 X_test 和 y_test 确定当前模型的准确度"""
         y_predict = self.predict(X_test)
         return r2_score(y_test, y_predict)
