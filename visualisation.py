@@ -20,7 +20,6 @@ def plot_in_order(X_train, y_train, y_predict):
 
 
 def plt_coefs_lambs(X_train, y_train, method):
-    """绘制参数与lambda的关系"""
     # @Author   : Tian Xiao
     coefs = []
     #lambs = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
@@ -54,7 +53,10 @@ def plt_scores_lambs(X_train, y_train, X_test, y_test, method):
     plt.xlabel("lambdas")
     plt.ylabel("scores")
     plt.xscale("log")
-    plt.ylim([-1,1])
+    #plt.ylim(-1, 1)
+    plt.ylim(0.2, 0.6)
+    my_y_ticks = np.arange(0.2, 0.6, 0.05)
+    plt.yticks(my_y_ticks)
     plt.plot(lambs, scores, '.-')
     plt.show()
 
