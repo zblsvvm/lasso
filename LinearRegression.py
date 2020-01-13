@@ -1,6 +1,10 @@
 import numpy as np
 from metrics import r2_score
 import itertools
+from numpy.linalg import cholesky, norm
+from scipy import sparse
+from scipy.sparse.linalg import spsolve
+from sklearn.linear_model import Lasso
 
 
 class LinearRegression:
@@ -37,13 +41,11 @@ class LinearRegression:
             except:
                 return float('inf')
 
-
         def uaf_derivative(x):
             """the derivative of the uniform approximation function"""
             u = 0.01
             a = (np.exp(x / u) - np.exp(- x / u)) / (np.exp(x / u) + np.exp(- x / u))
             return a
-
 
         def dJ(theta, X_b, y, lamb):
             penalty = lamb * uaf_derivative(theta)
@@ -124,7 +126,6 @@ class LinearRegression:
             a = (np.exp(x / u) - np.exp(- x / u)) / (np.exp(x / u) + np.exp(- x / u))
             return a
 
-
         def dJ_sgd(theta, X_b_i, y_i, lamb):
 
             return X_b_i * (X_b_i.dot(theta) - y_i) * 2. + lamb * uaf_derivative(theta)
@@ -172,7 +173,7 @@ class LinearRegression:
         theta = self.fit_sgd(X_train, y_train, lamb=lamb).theta
         self.theta = self.fit_bgd(X_train, y_train, initial_theta=theta, lamb=lamb).theta
         return self
-    
+
     def fit_pgd(self, X, y, lamb=1, threshold=0.1, niter=5000, acc=False):
         # initialize functions
         err = lambda X, w, y: X.dot(w) - y
@@ -215,16 +216,16 @@ class LinearRegression:
                     else:
                         Gammak = beta * Gammak
                 wk_acc = prox(wk_acc, Gammak * lamb)
-                tk_acc = 0.5 + 0.5*np.sqrt(1+4*(tk**2.))
-                vk_acc = wk_acc + ((tk - 1)/(tk + 1)) * (wk_acc - wk)
+                tk_acc = 0.5 + 0.5 * np.sqrt(1 + 4 * (tk ** 2.))
+                vk_acc = wk_acc + ((tk - 1) / (tk + 1)) * (wk_acc - wk)
                 diff = np.linalg.norm(obj(X, wk_acc, y, lamb) - obj(X, wk, y, lamb))
                 wk = wk_acc
                 tk = tk_acc
                 vk = vk_acc
-                
+
             if diff < threshold:
                 break
-                
+
         self.theta = wk.ravel()
         return self
 

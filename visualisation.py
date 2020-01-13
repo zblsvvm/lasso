@@ -6,7 +6,7 @@ import numpy as np
 from LassoRegression import LassoRegression
 from sklearn.decomposition import PCA
 from model_selection import _k_split
-
+import time
 
 def plot_in_order(X_train, y_train, y_predict):
     # @Author   : Tian Xiao
@@ -163,7 +163,7 @@ def create_plots(X, y, X_train, y_train, X_test, y_test, method):
     min_lamb_list = np.array([])
 
     fig, axs = plt.subplots(1, 2)
-
+    t=time.time()
     for i in range(1, k):
         x_2_list = np.array([])
         for l in lambs:
@@ -200,6 +200,7 @@ def create_plots(X, y, X_train, y_train, X_test, y_test, method):
 
     print('Best result for alpha is', best_lamb, '\nScore= ', lasso_reg.score(X_test, y_test))
     print('Coefficients =', lasso_reg.theta)
+    print('Elapsed Time = ', time.time()-t)
 
 
 
