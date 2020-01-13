@@ -14,11 +14,16 @@ from sklearn.decomposition import PCA
 from model_selection import _k_split
 from visualisation import create_plots
 import time
+from data import Data
+
 # Paste the dataset location below
 location='testdata_rgb.txt'
 
 
-X, y = readfile(location)
+
+d=Data()
+# X, y = d.boston()
+X, y = d.Residuals_Match_DMhydro_Less_z()
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, seed=666)
 
@@ -26,7 +31,7 @@ method = None
 while method == None:
     l = input('What method do you want to use ?\n a  Batch Gradient Descent\n b  Stochastic Gradient descent\n c  '
               'Mini-batch '
-              'Gradient Descent\n d  Ordinary Least Squares Solution\n e  Coordinate Descent\n')
+              'Gradient Descent\n d  Ordinary Least Squares Solution\n e  Coordinate Descent\n f Accelerated Proximal Gradient Descent\n g  Alternating Direction Method of Multipliers ')
     if l == "a":
         method = "bgd"
     elif l == "b":
@@ -37,6 +42,11 @@ while method == None:
         method = "normal"
     elif l == "e":
         method = "cd"
+    elif l == "f":
+        method = "pgd_acc"
+    elif l == "g":
+        method = "admm"
+
     else:
         print('Invalid Input')
 
@@ -49,22 +59,21 @@ while method == None:
 
 choice= None
 while choice == None:
-    c = input('What would you like to do?\n a Optimise \n b  Residuals vs Lambda \n c Dataset Size vs Scores \n d Coefficients vs Coefficients '
-              'Mini-batch '
-              'Gradient Descent\n e  Normal Equation Solution\n f  Coordinate Descent\n')
+    c = input('What would you like to do?\n a Optimise \n b  Residuals vs Lambda \n c Evolution of coefficients \n d Dataset Size vs Scores \n e Coefficients vs Coefficients ')
 
     if c == 'a':
-        t = time.time()
         create_plots(X, y, X_train, y_train, X_test, y_test, method)
 
-        print('elapsed time = ', time.time() - t, ' seconds')
     elif c == 'b':
         plt_residu_lambs(X_train, y_train, X_test, y_test, method)
 
-    elif c == 'c':
-        plt_scores_datasize(X_train, y_train, X_test, y_test, method)
+    elif c =='c':
+        plt_coefs_lambs(X_train, y_train, method)
 
     elif c == 'd':
+        plt_scores_datasize(X_train, y_train, X_test, y_test, method)
+
+    elif c == 'e':
         plt_coefs_coefs(X_train, y_train, method)
 
     else:
